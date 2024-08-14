@@ -2,6 +2,7 @@
 FROM ubuntu:20.04
 
 # use bash to setup
+# SHELL ["/usr/bin/bash", "-c"]
 
 # apt update and install commands
 RUN set -xe
@@ -32,7 +33,6 @@ RUN mkdir $HOME/local
 RUN mkdir $HOME/local/lib
 RUN mkdir $HOME/local/bin
 RUN sudo ln -s /usr/bin/python3 /usr/bin/python
-
 # create a path to $HOME/local
 ENV LD_LIBRARY_PATH $HOME/local/lib:$LD_LIBRARY_PATH
 ENV PKG_CONFIG_PATH $HOME/local/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -98,13 +98,14 @@ RUN cd $HOME/local && \
     echo 'Libs: -L${libdir} -lfinufft'                                                 >> $HOME/local/lib/pkgconfig/finufft.pc && \
     echo 'Cflags: -I${includedir}'                                                     >> $HOME/local/lib/pkgconfig/finufft.pc
 
+
 RUN pip install Cython
 RUN cd $HOME/local && \
     git clone https://github.com/pyNFFT/pyNFFT.git && \
     cd pyNFFT && \
-    CFLAGS='-I${includedir}' LDFLAGS='-L${LD_LIBRARY_PATH}' python3 setup.py build && \
-    sudo -E python3 install && \
-    CFLAGS='-I${includedir}' LDFLAGS='-L${LD_LIBRARY_PATH}' python3 setup.py build_ext --inplace
+    CFLAGS='-I/home/smiliuser/local/include' LDFLAGS='-L/home/smiliuser/local/lib' python3 setup.py build && \
+    sudo -E python3 setup.py install && \
+    CFLAGS='-I/home/smiliuser/local/include' LDFLAGS='-L/home/smiliuser/local/lib' python3 setup.py build_ext --inplace
 
 # ehtim
 RUN cd $HOME/local && \
