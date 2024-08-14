@@ -31,7 +31,7 @@ ENV HOME /home/smiliuser
 RUN mkdir $HOME/local
 RUN mkdir $HOME/local/lib
 RUN mkdir $HOME/local/bin
-RUN sudo ln -s /user/bin/python3 /user/bin/python
+RUN sudo ln -s /usr/bin/python3 /usr/bin/python
 
 # create a path to $HOME/local
 ENV LD_LIBRARY_PATH $HOME/local/lib:$LD_LIBRARY_PATH
